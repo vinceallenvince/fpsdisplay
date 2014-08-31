@@ -30,6 +30,28 @@ The module exports a FPSDisplay class. In a nodejs project, you access it via:
 var FPSDisplay = require('../src/fpsdisplay');
 ```
 
+In the browser, the module exposes an FPSDisplay class. Call init() to render the display. Call FPSDisplay.update from an animation loop to track the frames per second.
+
+```
+<html>
+  <head>
+    <script src="scripts/fpsdisplay.min.js" type="text/javascript" charset="utf-8"></script>
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+
+      window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                              window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+
+      FPSDisplay.init();
+
+      function loop() {
+        FPSDisplay.update();
+        window.requestAnimationFrame(loop);
+      }
+      loop();
+```
+
 Please review [the docs](http://vinceallenvince.github.io/fpsdisplay/doc/) for more details.
 
 ##Building this project
