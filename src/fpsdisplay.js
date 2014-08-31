@@ -73,25 +73,25 @@ FPSDisplay._frameCount = 0;
  */
 FPSDisplay.init = function() {
 
-  FPSDisplay.active = true;
+  this.active = true;
 
   /**
    * A reference to the DOM element containing the display.
    * @private
    */
-  FPSDisplay.el = document.createElement('div');
-  FPSDisplay.el.id = 'FPSDisplay';
-  FPSDisplay.el.className = 'FPSDisplay';
-  FPSDisplay.el.style.backgroundColor = 'black';
-  FPSDisplay.el.style.color = 'white';
-  FPSDisplay.el.style.fontFamily = 'Helvetica';
-  FPSDisplay.el.style.padding = '0.5em';
-  FPSDisplay.el.style.opacity = '0.5';
-  FPSDisplay.el.style.position = 'absolute';
-  FPSDisplay.el.style.top = 0;
-  FPSDisplay.el.style.right = 0;
-  FPSDisplay.el.style.left = 0;
-  FPSDisplay.el.style.zIndex = 1000;
+  this.el = document.createElement('div');
+  this.el.id = 'FPSDisplay';
+  this.el.className = 'FPSDisplay';
+  this.el.style.backgroundColor = 'black';
+  this.el.style.color = 'white';
+  this.el.style.fontFamily = 'Helvetica';
+  this.el.style.padding = '0.5em';
+  this.el.style.opacity = '0.5';
+  this.el.style.position = 'absolute';
+  this.el.style.top = 0;
+  this.el.style.right = 0;
+  this.el.style.left = 0;
+  this.el.style.zIndex = 1000;
 
 
   // create totol elements label
@@ -100,11 +100,11 @@ FPSDisplay.init = function() {
   labelContainer.style.marginLeft = '0.5em';
   label = document.createTextNode('total elements: ');
   labelContainer.appendChild(label);
-  FPSDisplay.el.appendChild(labelContainer);
+  this.el.appendChild(labelContainer);
 
   // create textNode for totalElements
-  FPSDisplay.totalElementsValue = document.createTextNode('0');
-  FPSDisplay.el.appendChild(FPSDisplay.totalElementsValue);
+  this.totalElementsValue = document.createTextNode('0');
+  this.el.appendChild(this.totalElementsValue);
 
   // create fps label
   labelContainer = document.createElement('span');
@@ -112,13 +112,13 @@ FPSDisplay.init = function() {
   labelContainer.style.marginLeft = '0.5em';
   var label = document.createTextNode('fps: ');
   labelContainer.appendChild(label);
-  FPSDisplay.el.appendChild(labelContainer);
+  this.el.appendChild(labelContainer);
 
   // create textNode for fps
-  FPSDisplay.fpsValue = document.createTextNode('0');
-  FPSDisplay.el.appendChild(FPSDisplay.fpsValue);
+  this.fpsValue = document.createTextNode('0');
+  this.el.appendChild(this.fpsValue);
 
-  document.body.appendChild(FPSDisplay.el);
+  document.body.appendChild(this.el);
 
 };
 
@@ -134,21 +134,20 @@ FPSDisplay.init = function() {
  */
 FPSDisplay.update = function(opt_totalItems) {
 
-  var sd = FPSDisplay,
-      totalItems = opt_totalItems || 0;
+  var totalItems = opt_totalItems || 0;
 
-  sd._time = Date.now();
-  sd._frameCount++;
+  this._time = Date.now();
+  this._frameCount++;
 
   // at least a second has passed
-  if (sd._time > sd._timeLastSecond + 1000) {
+  if (this._time > this._timeLastSecond + 1000) {
 
-    sd.fps = sd._frameCount;
-    sd._timeLastSecond = sd._time;
-    sd._frameCount = 0;
+    this.fps = this._frameCount;
+    this._timeLastSecond = this._time;
+    this._frameCount = 0;
 
-    sd.fpsValue.nodeValue = sd.fps;
-    sd.totalElementsValue.nodeValue = totalItems;
+    this.fpsValue.nodeValue = this.fps;
+    this.totalElementsValue.nodeValue = totalItems;
   }
 };
 
@@ -158,8 +157,7 @@ FPSDisplay.update = function(opt_totalItems) {
  * @memberof FPSDisplay
  */
 FPSDisplay.hide = function() {
-  var sd = document.getElementById(FPSDisplay.el.id);
-  sd.style.display = 'none';
+  this.el.style.display = 'none';
   FPSDisplay.active = false;
 };
 
@@ -169,8 +167,7 @@ FPSDisplay.hide = function() {
  * @memberof FPSDisplay
  */
 FPSDisplay.show = function() {
-  var sd = document.getElementById(FPSDisplay.el.id);
-  sd.style.display = 'block';
+  this.el.style.display = 'block';
   FPSDisplay.active = true;
 };
 
