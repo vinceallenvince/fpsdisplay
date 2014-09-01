@@ -10,3 +10,24 @@ before_deploy: echo 'ready?'
 after_deploy:
 - echo 'done!'
 - ./deploy-gh-pages.sh
+deploy:
+- provider: npm
+  email: vince@vinceallen.com
+  api_key:
+    secure: c/3zEybtCTtO84lCQgqNEBNvSOIJJaLro2Jl992NDSdzZpUdoXT10bGjxbcdCm1ivBAxj3ER8ds1zWO4RybA7dDlIrbs28hTRusrfIPlFewgotG/dYtVTtV5W7URlPQUsqNbD1m2HVzrIa6Zhh5ab97Q9NY5nxZIECpiy6Qp/9A=
+  on:
+    tags: true
+    all_branches: true
+    repo: vinceallenvince/fpsdisplay
+- provider: releases
+  api_key:
+    secure: T3EAO5iMGm7xIeyExQZA1qFkZVADKrgox3TjbOJVVREPkiSu1O23iuUymKj3JkWveMrHvWih7bIYCT2m3pRGi3oPC5nWyCXy1hxwOvc+RqYXwO57vP41E+3EdfYy0EVEY+kuVxSnjzujMao9XjmEQC21OvnGn+vnesMLvT/Rxlo=
+  file: release/fpsdisplay.js
+  on:
+    tags: true
+    all_branches: true
+    repo: vinceallenvince/fpsdisplay
+env:
+  global:
+  - GH_REF: github.com/vinceallenvince/fpsdisplay.git
+  - secure: JUbM+CgGLgj8SkA0LU3ZFS4Mvq8DuLbp3CHZhwf9TH8u7jUr+6/qpbZ9gjxP3z+N7sILbredvXgm1rSChJmAP2w4G4mtltkW8sRRNxiXm1vgWHkf+SOZSfbBO9LHD50oeqTAG7OFRxbGPHjxqMhq1JU9a6TFG/5vj2t2ixsV0L8=
