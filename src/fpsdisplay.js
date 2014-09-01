@@ -81,7 +81,7 @@ FPSDisplay.init = function() {
    */
   this.el = document.createElement('div');
   this.el.id = 'FPSDisplay';
-  this.el.className = 'FPSDisplay';
+  this.el.className = 'fpsDisplay';
   this.el.style.backgroundColor = 'black';
   this.el.style.color = 'white';
   this.el.style.fontFamily = 'Helvetica';
@@ -96,7 +96,7 @@ FPSDisplay.init = function() {
 
   // create totol elements label
   var labelContainer = document.createElement('span');
-  labelContainer.className = 'statsDisplayLabel';
+  labelContainer.className = 'fpsDisplayLabel';
   labelContainer.style.marginLeft = '0.5em';
   label = document.createTextNode('total elements: ');
   labelContainer.appendChild(label);
@@ -108,7 +108,7 @@ FPSDisplay.init = function() {
 
   // create fps label
   labelContainer = document.createElement('span');
-  labelContainer.className = 'statsDisplayLabel';
+  labelContainer.className = 'fpsDisplayLabel';
   labelContainer.style.marginLeft = '0.5em';
   var label = document.createTextNode('fps: ');
   labelContainer.appendChild(label);
