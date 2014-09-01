@@ -52,6 +52,24 @@ In the browser, the module exposes an FPSDisplay class. Call init() to render th
       loop();
 ```
 
+Use the show()/hide() methods to toggle the display.
+
+```
+  ...
+  document.addEventListener('keyup', function(e) {
+    switch (e.keyCode) {
+      case 83: // 's'
+        if (FPSDisplay.active) {
+          FPSDisplay.hide();
+        } else {
+          FPSDisplay.show();
+        }
+        break;
+    }
+  });
+  ...
+```
+
 Please review [the docs](http://vinceallenvince.github.io/fpsdisplay/doc/) for more details.
 
 ##Building this project
