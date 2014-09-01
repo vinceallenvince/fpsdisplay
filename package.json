@@ -1,6 +1,6 @@
 {
   "name": "fpsdisplay",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A simple frames per second display.",
   "keywords": "utilities",
   "main": "./src/fpsdisplay.js",
