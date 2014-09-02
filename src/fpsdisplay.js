@@ -18,27 +18,35 @@ function FPSDisplay() {}
 
 /**
  * Name
- * @private
+ * @type {string}
  * @memberof FPSDisplay
  */
 FPSDisplay.name = 'FPSDisplay';
 
 /**
  * Set to false to stop requesting animation frames.
- * @private
+ * @type {boolean}
  * @memberof FPSDisplay
  */
 FPSDisplay.active = false;
 
 /**
  * Frames per second.
- * @private
+ * @type {number}
  * @memberof FPSDisplay
  */
-FPSDisplay.fps = false;
+FPSDisplay.fps = 0;
+
+/**
+ * Total items.
+ * @type {number}
+ * @memberof FPSDisplay
+ */
+FPSDisplay.totalItems = 0;
 
 /**
  * The current time.
+ * @type {number}
  * @private
  * @memberof FPSDisplay
  */
@@ -46,6 +54,7 @@ FPSDisplay._time = Date.now();
 
 /**
  * The time at the last frame.
+ * @type {number}
  * @private
  * @memberof FPSDisplay
  */
@@ -53,6 +62,7 @@ FPSDisplay._timeLastFrame = FPSDisplay._time;
 
 /**
  * The time the last second was sampled.
+ * @type {number}
  * @private
  * @memberof FPSDisplay
  */
@@ -61,6 +71,7 @@ FPSDisplay._timeLastSecond = FPSDisplay._time;
 /**
  * Holds the total number of frames
  * between seconds.
+ * @type {number}
  * @private
  * @memberof FPSDisplay
  */
@@ -72,6 +83,10 @@ FPSDisplay._frameCount = 0;
  * @memberof FPSDisplay
  */
 FPSDisplay.init = function() {
+
+  if (this.el) { // should only create one instance of FPSDisplay.
+    return;
+  }
 
   this.active = true;
 
@@ -134,7 +149,7 @@ FPSDisplay.init = function() {
  */
 FPSDisplay.update = function(opt_totalItems) {
 
-  var totalItems = opt_totalItems || 0;
+  this.totalItems = opt_totalItems || 0;
 
   this._time = Date.now();
   this._frameCount++;
@@ -147,7 +162,7 @@ FPSDisplay.update = function(opt_totalItems) {
     this._frameCount = 0;
 
     this.fpsValue.nodeValue = this.fps;
-    this.totalElementsValue.nodeValue = totalItems;
+    this.totalElementsValue.nodeValue = this.totalItems;
   }
 };
 

@@ -2,7 +2,12 @@ var test = require('tape'),
     FPSDisplay, obj;
 
 function beforeTest() {
-
+  document.body.innerHTML = '';
+  FPSDisplay.el = null;
+  FPSDisplay.active = false;
+  FPSDisplay.fps = 0;
+  FPSDisplay.totalItems = 0;
+  FPSDisplay._frameCount = 0;
 }
 
 test('load FPSDisplay.', function(t) {
@@ -14,7 +19,8 @@ test('load FPSDisplay.', function(t) {
 test('check static properties.', function(t) {
   t.equal(FPSDisplay.name, 'FPSDisplay', 'should have a name.');
   t.equal(FPSDisplay.active, false, 'active = false.');
-  t.equal(FPSDisplay.fps, false, 'fps = false.');
+  t.equal(FPSDisplay.totalItems, 0, 'totalItems = 0.');
+  t.equal(FPSDisplay.fps, 0, 'fps = 0.');
   t.ok(FPSDisplay._time, 'has a _time property.');
   t.ok(FPSDisplay._timeLastFrame, 'has a _timeLastFrame.');
   t.ok(FPSDisplay._timeLastSecond, 'has a _timeLastSecond.');
@@ -23,7 +29,9 @@ test('check static properties.', function(t) {
 });
 
 test('init() should initialize the FPSDisplay.', function(t) {
-  document.body.innerHTML = '';
+
+  beforeTest();
+
   FPSDisplay.init();
   t.equal(typeof FPSDisplay.el, 'object', 'el is a DOM element.');
   t.equal(FPSDisplay.el.id, 'FPSDisplay', 'el id = FPSDisplay.');
@@ -35,7 +43,7 @@ test('init() should initialize the FPSDisplay.', function(t) {
 });
 
 test('hide() should hide the FPSDisplay.', function(t) {
-  document.body.innerHTML = '';
+  beforeTest();
   FPSDisplay.init();
   FPSDisplay.hide();
   var view = document.querySelectorAll('.fpsDisplay')[0];
@@ -44,7 +52,7 @@ test('hide() should hide the FPSDisplay.', function(t) {
 });
 
 test('show() should show the FPSDisplay.', function(t) {
-  document.body.innerHTML = '';
+  beforeTest();
   FPSDisplay.init();
   FPSDisplay.hide();
   FPSDisplay.show();
