@@ -36,6 +36,7 @@ test('init() should initialize the FPSDisplay.', function(t) {
   t.equal(typeof FPSDisplay.el, 'object', 'el is a DOM element.');
   t.equal(FPSDisplay.el.id, 'FPSDisplay', 'el id = FPSDisplay.');
   t.equal(FPSDisplay.el.className, 'fpsDisplay', 'el className = fpsDisplay.');
+  t.notEqual(FPSDisplay.el.style.cssText.search('fixed'), -1, 'el position style is fixed.');
   t.ok(FPSDisplay.totalElementsValue, 'should have a _totalElementsValue property.');
   t.ok(FPSDisplay.fpsValue, 'should have a _fpsValue property.');
   t.equal(document.querySelectorAll('.fpsDisplay').length, 1, 'should append a view.');
