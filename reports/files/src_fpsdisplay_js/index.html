@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>src/fpsdisplay.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">62.73</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">173</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">19.42</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">0.88</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">/*global document, window */
+
+/**
+ * Creates a new FPSDisplay object.
+ *
+ * Use this class to create a field at the
+ * top of the browser that displays the current
+ * frames per second and total number of elements
+ * in an optional passed array.
+ *
+ * Note: FPSDisplay will not function in browsers
+ * whose Date object does not support Date.now().
+ * These include IE6, IE7, and IE8.
+ *
+ * @constructor
+ */
+function FPSDisplay() {}
+
+/**
+ * Name
+ * @type {string}
+ * @memberof FPSDisplay
+ */
+FPSDisplay.name = &#039;FPSDisplay&#039;;
+
+/**
+ * Set to false to stop requesting animation frames.
+ * @type {boolean}
+ * @memberof FPSDisplay
+ */
+FPSDisplay.active = false;
+
+/**
+ * Frames per second.
+ * @type {number}
+ * @memberof FPSDisplay
+ */
+FPSDisplay.fps = 0;
+
+/**
+ * Total items.
+ * @type {number}
+ * @memberof FPSDisplay
+ */
+FPSDisplay.totalItems = 0;
+
+/**
+ * The current time.
+ * @type {number}
+ * @private
+ * @memberof FPSDisplay
+ */
+FPSDisplay._time = Date.now();
+
+/**
+ * The time at the last frame.
+ * @type {number}
+ * @private
+ * @memberof FPSDisplay
+ */
+FPSDisplay._timeLastFrame = FPSDisplay._time;
+
+/**
+ * The time the last second was sampled.
+ * @type {number}
+ * @private
+ * @memberof FPSDisplay
+ */
+FPSDisplay._timeLastSecond = FPSDisplay._time;
+
+/**
+ * Holds the total number of frames
+ * between seconds.
+ * @type {number}
+ * @private
+ * @memberof FPSDisplay
+ */
+FPSDisplay._frameCount = 0;
+
+/**
+ * Initializes the FPSDisplay.
+ * @function update
+ * @memberof FPSDisplay
+ */
+FPSDisplay.init = function() {
+
+  if (this.el) { // should only create one instance of FPSDisplay.
+    return;
+  }
+
+  this.active = true;
+
+  /**
+   * A reference to the DOM element containing the display.
+   * @private
+   */
+  this.el = document.createElement(&#039;div&#039;);
+  this.el.id = &#039;FPSDisplay&#039;;
+  this.el.className = &#039;fpsDisplay&#039;;
+  this.el.style.backgroundColor = &#039;black&#039;;
+  this.el.style.color = &#039;white&#039;;
+  this.el.style.fontFamily = &#039;Helvetica&#039;;
+  this.el.style.padding = &#039;0.5em&#039;;
+  this.el.style.opacity = &#039;0.5&#039;;
+  this.el.style.position = &#039;fixed&#039;;
+  this.el.style.top = 0;
+  this.el.style.right = 0;
+  this.el.style.left = 0;
+  this.el.style.zIndex = 1000;
+
+
+  // create totol elements label
+  var labelContainer = document.createElement(&#039;span&#039;);
+  labelContainer.className = &#039;fpsDisplayLabel&#039;;
+  labelContainer.style.marginLeft = &#039;0.5em&#039;;
+  label = document.createTextNode(&#039;total elements: &#039;);
+  labelContainer.appendChild(label);
+  this.el.appendChild(labelContainer);
+
+  // create textNode for totalElements
+  this.totalElementsValue = document.createTextNode(&#039;0&#039;);
+  this.el.appendChild(this.totalElementsValue);
+
+  // create fps label
+  labelContainer = document.createElement(&#039;span&#039;);
+  labelContainer.className = &#039;fpsDisplayLabel&#039;;
+  labelContainer.style.marginLeft = &#039;0.5em&#039;;
+  var label = document.createTextNode(&#039;fps: &#039;);
+  labelContainer.appendChild(label);
+  this.el.appendChild(labelContainer);
+
+  // create textNode for fps
+  this.fpsValue = document.createTextNode(&#039;0&#039;);
+  this.el.appendChild(this.fpsValue);
+
+  document.body.appendChild(this.el);
+
+};
+
+/**
+ * If 1000ms have elapsed since the last evaluated second,
+ * fps is assigned the total number of frames rendered and
+ * its corresponding textNode is updated. The total number of
+ * elements is also updated.
+ *
+ * @function update
+ * @memberof FPSDisplay
+ * @param {Number} [opt_totalItems] The total items in the system.
+ */
+FPSDisplay.update = function(opt_totalItems) {
+
+  this.totalItems = opt_totalItems || 0;
+
+  this._time = Date.now();
+  this._frameCount++;
+
+  // at least a second has passed
+  if (this._time &gt; this._timeLastSecond + 1000) {
+
+    this.fps = this._frameCount;
+    this._timeLastSecond = this._time;
+    this._frameCount = 0;
+
+    this.fpsValue.nodeValue = this.fps;
+    this.totalElementsValue.nodeValue = this.totalItems;
+  }
+};
+
+/**
+ * Hides FPSDisplay from DOM.
+ * @function hide
+ * @memberof FPSDisplay
+ */
+FPSDisplay.hide = function() {
+  this.el.style.display = &#039;none&#039;;
+  FPSDisplay.active = false;
+};
+
+/**
+ * Shows FPSDisplay from DOM.
+ * @function show
+ * @memberof FPSDisplay
+ */
+FPSDisplay.show = function() {
+  this.el.style.display = &#039;block&#039;;
+  FPSDisplay.active = true;
+};
+
+module.exports = FPSDisplay;</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

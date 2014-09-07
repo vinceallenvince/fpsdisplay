@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta name="keywords" content="animation, DOM, renderer" />
+  <meta name="description" content="A DOM-based rendering engine." />
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name='apple-mobile-web-app-capable' content='yes' />
+  <title>FPSDisplay</title>
+  <style>
+
+  </style>
+  <script src="scripts/fpsdisplay.min.js" type="text/javascript" charset="utf-8"></script>
+  </head>
+  <body>
+    <h1>FPS Display</h1>
+    <p>Press 's' to toggle display.</p>
+    <script type="text/javascript" charset="utf-8">
+
+      window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                              window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+
+      FPSDisplay.init();
+
+      var list = [1, 2, 3, 4, 5, 6];
+
+      function loop() {
+        FPSDisplay.update(list.length);
+        window.requestAnimationFrame(loop);
+      }
+      loop();
+
+      document.addEventListener('keyup', function(e) {
+        switch (e.keyCode) {
+          case 83:
+            if (FPSDisplay.active) {
+              FPSDisplay.hide();
+            } else {
+              FPSDisplay.show();
+            }
+            break;
+        }
+      });
+
+    </script>
+  </body>
+</html>
